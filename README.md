@@ -5,8 +5,8 @@
 For CPU:
 
 ```bash
-conda create -n fae python=3.6
-conda activate fae
+conda create -n cfol python=3.6
+conda activate cfol
 python setup.py develop
 ```
 
@@ -14,8 +14,8 @@ python setup.py develop
 For GPU:
 
 ```bash
-conda create -n fae python=3.6
-conda activate fae
+conda create -n cfol python=3.6
+conda activate cfol
 conda install cudatoolkit=11 torchvision -c pytorch
 python setup.py develop
 pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
@@ -34,7 +34,7 @@ For wandb:
 
 ```
 ├── bulk_script.py                (Script for generating experiments with standardized configs)
-└── fae                           
+└── cfol                           
     ├── runner.py                 (Entry point setting up the dataset and model)
     ├── model.py                  (Specifies the training and testing)
     ├── config.py                 (Available configurations)
@@ -48,8 +48,8 @@ The code below contains minimal boilerplate for using CFOL in another codebase.
 
 ```python
 ######################### Setup ##########################
-from fae.focused_sampler import InMemoryDataset
-from fae.class_sampler import ClassSampler
+from cfol.focused_sampler import InMemoryDataset
+from cfol.class_sampler import ClassSampler
 dataset = InMemoryDataset(data, targets, transforms=...)
 sampler = ClassSampler(dataset, gamma=0.5)
 dataloader = DataLoader(dataset, ..., sampler=sampler)
@@ -77,8 +77,8 @@ sampler.batch_update(y, eta_times_loss_arms)
 ## Run
 
 ```bash
-python fae/runner.py print_config
-python fae/runner.py with h.gpus=0 h.model_opt.lr=0.01
+python cfol/runner.py print_config
+python cfol/runner.py with h.gpus=0 h.model_opt.lr=0.01
 ```
 
 The command for a particular experiment can be generated with default configurations using `cmd_generator.py` (see below).

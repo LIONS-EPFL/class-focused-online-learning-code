@@ -2,10 +2,10 @@ from PIL import Image
 import numpy as np
 import torch
 
-from fae.data_transforms import imbalance_factor_to_lt_factor, reduce_classes_dbset, reduce_classes_dbset_longtailed
+from cfol.data_transforms import imbalance_factor_to_lt_factor, reduce_classes_dbset, reduce_classes_dbset_longtailed
 from typing import Any, Optional, Tuple, Union
 from torch.utils.data import Dataset
-from fae.focused_sampler import FocusedCIFAR10DataModule, FocusedGTSRBDataModule, FocusedImagenetteDataModule, FocusedSTL10DataModule, FocusedCIFAR100DataModule, FocusedTinyImageNetDataModule, InMemoryDataset
+from cfol.focused_sampler import FocusedCIFAR10DataModule, FocusedGTSRBDataModule, FocusedImagenetteDataModule, FocusedSTL10DataModule, FocusedCIFAR100DataModule, FocusedTinyImageNetDataModule, InMemoryDataset
 
 
 class ReducedDataModuleMixin(object):

@@ -10,8 +10,8 @@ import torch
 import torch.nn as nn
 import numpy as np
 import logging
-from fae.cvar.utils import project_to_cs_ball, project_to_cvar_ball
-from fae.cvar.datasets import CustomDistributionSampler
+from cfol.cvar.utils import project_to_cs_ball, project_to_cvar_ball
+from cfol.cvar.datasets import CustomDistributionSampler
 import pdb
 
 GEOMETRIES = ('cvar', 'chi-square')

@@ -7,15 +7,39 @@ from pl_bolts.utils.warnings import warn_missing_pkg
 
 if _TORCHVISION_AVAILABLE:
     from torchvision import transforms as transform_lib
+    from cfol.tiny_imagenet_dataset import TinyImageNet
 else:  # pragma: no cover
     warn_missing_pkg('torchvision')
+    TinyImageNet = None
 
-from fae.GTSRB_dataset import GTSRB
 
-class GTSRBDataModule(VisionDataModule):
-    name = "GTSRB"
-    dataset_cls = GTSRB
-    dims = (3, 32, 32) # after transforms in runner.py
+class TinyImageNetDataModule(VisionDataModule):
+    """
+    Specs:
+        - 200 classes (1 per class)
+        - Each image is (3 x 64 x 64)
+    Standard TinyImageNet, train, val, test splits and transforms
+    Transforms::
+        mnist_transforms = transform_lib.Compose([
+            transform_lib.ToTensor(),
+            transforms.Normalize(
+                mean=[x / 255.0 for x in [125.3, 123.0, 113.9]],
+                std=[x / 255.0 for x in [63.0, 62.1, 66.7]]
+            )
+        ])
+    Example::
+        dm = TinyImageNetDataModule(PATH)
+        model = LitModel()
+        Trainer().fit(model, datamodule=dm)
+    Or you can set your own transforms
+    Example::
+        dm.train_transforms = ...
+        dm.test_transforms = ...
+        dm.val_transforms  = ...
+    """
+    name = "tinyimagenet"
+    dataset_cls = TinyImageNet
+    dims = (3, 64, 64)
 
     def __init__(
         self,
@@ -44,15 +68,6 @@ class GTSRBDataModule(VisionDataModule):
                         returning them
             drop_last: If true drops the last incomplete batch
         """
-        # Make th dataset_cls interace the same as for CIFAR10
-        dataset_cls = self.dataset_cls
-
-        def dataset_cls_wrapper(*args, train=True, **kwargs):
-            split = "train" if train else "test"
-            return dataset_cls(*args, split=split, **kwargs)
-
-        self.dataset_cls = dataset_cls_wrapper
-
         super().__init__(  # type: ignore[misc]
             data_dir=data_dir,
             val_split=val_split,
@@ -69,16 +84,21 @@ class GTSRBDataModule(VisionDataModule):
 
     @property
     def num_samples(self) -> int:
-        train_len, _ = self._get_splits(len_dataset=39_209)
+        train_len, _ = self._get_splits(len_dataset=100_000)
         return train_len
 
     @property
     def num_classes(self) -> int:
-        return 43
+        """
+        Return:
+            200
+        """
+        return 200
 
     def default_transforms(self) -> Callable:
         if self.normalize:
-            raise ValueError("Normalization not supported for GTSRB")
+            #transforms = transform_lib.Compose([transform_lib.ToTensor(), cifar10_normalization()])
+            raise ValueError("Normalization not supported for TinyImageNet")
         else:
             transforms = transform_lib.Compose([transform_lib.ToTensor()])
 

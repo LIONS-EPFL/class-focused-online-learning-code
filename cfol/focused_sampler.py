@@ -1,8 +1,8 @@
-from fae.GTSRB_datamodule import GTSRBDataModule
-from fae.imagenette_datamodule import ImagenetteDataModule
-from fae.tiny_imagenet_datamodule import TinyImageNetDataModule
-from fae.labeled_stl10_datamodule import STL10DataModule
-from fae.cifar100_datamodule import CIFAR100DataModule
+from cfol.GTSRB_datamodule import GTSRBDataModule
+from cfol.imagenette_datamodule import ImagenetteDataModule
+from cfol.tiny_imagenet_datamodule import TinyImageNetDataModule
+from cfol.labeled_stl10_datamodule import STL10DataModule
+from cfol.cifar100_datamodule import CIFAR100DataModule
 from torchvision.datasets.cifar import CIFAR10
 import math
 import os
@@ -18,8 +18,8 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from pl_bolts.datamodules import CIFAR10DataModule
 from torch.utils.data.sampler import Sampler
 
-from fae.index_wrapper import IndexWrapper
-from fae.pretty_print_binary_tree import printBTree
+from cfol.index_wrapper import IndexWrapper
+from cfol.pretty_print_binary_tree import printBTree
 
 
 GAMMA = 0.5

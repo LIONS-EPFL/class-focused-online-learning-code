@@ -1,16 +1,16 @@
 from argparse import Namespace
 from enum import Enum, auto
-from fae.augmentation import Cutout
-from fae.temporal_ensembling import TemporalEnsembling
-from fae.preactresnet import PreActResNet18
-from fae.wideresnet import WideResNet
-from fae.sampler_scheduler import SamplerResetScheduler
-from fae.lcvar_loss import LCVaRLoss
-from fae.skipinit import SkipInit18, SkipInit50
-from fae.resnet import ResNet18, ResNet50
-from fae.resnet_madry import ResNet50 as ResNet50Madry
-from fae.class_sampler import ClassSampler
-from fae.utils import compute_grad_norm, plot_confusion_matrix
+from cfol.augmentation import Cutout
+from cfol.temporal_ensembling import TemporalEnsembling
+from cfol.preactresnet import PreActResNet18
+from cfol.wideresnet import WideResNet
+from cfol.sampler_scheduler import SamplerResetScheduler
+from cfol.lcvar_loss import LCVaRLoss
+from cfol.skipinit import SkipInit18, SkipInit50
+from cfol.resnet import ResNet18, ResNet50
+from cfol.resnet_madry import ResNet50 as ResNet50Madry
+from cfol.class_sampler import ClassSampler
+from cfol.utils import compute_grad_norm, plot_confusion_matrix
 import warnings
 import math 
 
@@ -30,13 +30,13 @@ import torchvision.models as models
 from torch.distributions.utils import logits_to_probs, probs_to_logits
 import matplotlib
 matplotlib.use('Agg')
-from fae.cvar.robust_losses import RobustLoss
+from cfol.cvar.robust_losses import RobustLoss
 
 import matplotlib.pyplot as plt
 
-from fae.metrics import Histogram
-from fae.config import AttackArgs, Hpars
-from fae.focused_sampler import FocusedSampler
+from cfol.metrics import Histogram
+from cfol.config import AttackArgs, Hpars
+from cfol.focused_sampler import FocusedSampler
 
 
 class Stage(Enum):
@@ -140,7 +140,7 @@ class Model(pl.LightningModule):
             del model_kwargs['pool_adapt']
             model = vgg16(**model_kwargs)
         elif self.config.model == 'vgg16_bn':
-            from fae.vgg import VGG
+            from cfol.vgg import VGG
             del model_kwargs['pool_adapt']
             model = VGG('VGG16')
         elif self.config.model == 'resnet50':
@@ -369,7 +369,7 @@ class Model(pl.LightningModule):
             adv = self.config.trades_reg * adv.mean() 
         else:
             # Compute and log clean loss
-            with self.profiler.profile('fae_compute_clean_loss'):
+            with self.profiler.profile('cfol_compute_clean_loss'):
                 # Don't update batch stats using clean if only adv loss is used
                 if self.config.loss_type != 'adv':
                     clean, clean_logits = self._compute_loss(batch, batch_idx, stage=Stage.train, type=LossType.clean, reduction="none", return_logits=True)
@@ -377,7 +377,7 @@ class Model(pl.LightningModule):
                     clean, clean_logits = None, None    
             
             # Compute and log adv loss
-            with self.profiler.profile('fae_compute_adv_loss'):
+            with self.profiler.profile('cfol_compute_adv_loss'):
                 if self.config.loss_type != 'clean':
                     # Only compute adv loss if necessary
                     adv, adv_logits = self._compute_loss(batch, batch_idx, stage=Stage.train, type=LossType.adv, reduction="none", return_logits=True)
@@ -403,7 +403,7 @@ class Model(pl.LightningModule):
         else:
             loss.mean().backward()
 
-        with self.profiler.profile('fae_model_step'):
+        with self.profiler.profile('cfol_model_step'):
             # Optional gradient clipping
             self.config.model_opt.clip(self.model)
             
@@ -413,7 +413,7 @@ class Model(pl.LightningModule):
             opt_model.zero_grad()
 
         # Update the adversarial sampler
-        with self.profiler.profile('fae_focused_sampler_update'):
+        with self.profiler.profile('cfol_focused_sampler_update'):
             if self.config.use_focused_sampler and self.config.update_focused_sampler:
                 sampler: FocusedSampler = self.sampler
 
@@ -434,7 +434,7 @@ class Model(pl.LightningModule):
                     sampler.update(idx, nom.item())
 
         # Update class sampler 
-        with self.profiler.profile('fae_class_sampler_update'):
+        with self.profiler.profile('cfol_class_sampler_update'):
             if self.config.use_class_sampler:
                 sampler: ClassSampler = self.sampler
 

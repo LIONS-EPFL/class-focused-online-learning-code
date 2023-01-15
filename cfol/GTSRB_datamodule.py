@@ -10,12 +10,12 @@ if _TORCHVISION_AVAILABLE:
 else:  # pragma: no cover
     warn_missing_pkg('torchvision')
 
-from fae.imagenette_dataset import ImagenetteDataset, imagenette_len
+from cfol.GTSRB_dataset import GTSRB
 
-class ImagenetteDataModule(VisionDataModule):
-    name = "Imagenette"
-    dataset_cls = ImagenetteDataset
-    dims = (3, 160, 160)
+class GTSRBDataModule(VisionDataModule):
+    name = "GTSRB"
+    dataset_cls = GTSRB
+    dims = (3, 32, 32) # after transforms in runner.py
 
     def __init__(
         self,
@@ -69,16 +69,16 @@ class ImagenetteDataModule(VisionDataModule):
 
     @property
     def num_samples(self) -> int:
-        train_len, _ = self._get_splits(len_dataset=imagenette_len['imagenette2']['train'])
+        train_len, _ = self._get_splits(len_dataset=39_209)
         return train_len
 
     @property
     def num_classes(self) -> int:
-        return 10
+        return 43
 
     def default_transforms(self) -> Callable:
         if self.normalize:
-            raise ValueError("Normalization not supported for Imagenette")
+            raise ValueError("Normalization not supported for GTSRB")
         else:
             transforms = transform_lib.Compose([transform_lib.ToTensor()])
 

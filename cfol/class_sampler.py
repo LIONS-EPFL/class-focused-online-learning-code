@@ -2,7 +2,7 @@ from typing import Iterable
 import numpy as np
 import torch
 from torch.utils.data.sampler import Sampler
-from fae.data_module import InMemoryDataset
+from cfol.data_module import InMemoryDataset
 from torch.functional import F
 
 

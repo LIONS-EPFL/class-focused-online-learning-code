@@ -1,7 +1,7 @@
 import math
-from fae.augmentation import Cutout
-from fae.imagenette_dataset import ImagenetteDataset
-from fae.tiny_imagenet_dataset import TinyImageNet
+from cfol.augmentation import Cutout
+from cfol.imagenette_dataset import ImagenetteDataset
+from cfol.tiny_imagenet_dataset import TinyImageNet
 from math import e
 
 import os
@@ -24,17 +24,17 @@ from pl_bolts.datamodules import CIFAR10DataModule
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.profiler import PyTorchProfiler
 
-from fae.class_sampler import ClassSampler
-from fae.model import Model
-from fae.config import Hpars
-from fae.GTSRB_dataset import GTSRB
-from fae.data_module import ReducedCIFAR10DataModule, ReducedCIFAR100DataModule, ReducedGTSRBDataModule, ReducedImagenetteDataModule, ReducedSTL10DataModule, ReducedTinyImageNetDataModule
-from fae.focused_sampler import FocusedCIFAR10DataModule, FocusedCIFAR100DataModule, FocusedGTSRBDataModule, FocusedImagenetteDataModule, FocusedSTL10DataModule, FocusedSampler, FocusedTinyImageNetDataModule
+from cfol.class_sampler import ClassSampler
+from cfol.model import Model
+from cfol.config import Hpars
+from cfol.GTSRB_dataset import GTSRB
+from cfol.data_module import ReducedCIFAR10DataModule, ReducedCIFAR100DataModule, ReducedGTSRBDataModule, ReducedImagenetteDataModule, ReducedSTL10DataModule, ReducedTinyImageNetDataModule
+from cfol.focused_sampler import FocusedCIFAR10DataModule, FocusedCIFAR100DataModule, FocusedGTSRBDataModule, FocusedImagenetteDataModule, FocusedSTL10DataModule, FocusedSampler, FocusedTinyImageNetDataModule
 
 from sacred import Experiment, SETTINGS
 SETTINGS['HOST_INFO']['INCLUDE_GPU_INFO'] = False
 
-ex = Experiment('fae')
+ex = Experiment('cfol')
 
 
 def get_stl10(*args, train=True, **kwargs):

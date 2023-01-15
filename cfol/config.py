@@ -1,4 +1,4 @@
-from fae.pgd import PGD
+from cfol.pgd import PGD
 import os
 from typing import List, Sequence, Union
 from types import SimpleNamespace

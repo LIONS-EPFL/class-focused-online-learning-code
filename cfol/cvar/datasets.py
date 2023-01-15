@@ -16,7 +16,7 @@ import logging
 
 from itertools import product as product_iter
 
-import fae.cvar.utils as utils
+import cfol.cvar.utils as utils
 
 from collections import Mapping
 

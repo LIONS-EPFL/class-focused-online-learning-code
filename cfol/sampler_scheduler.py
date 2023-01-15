@@ -1,4 +1,4 @@
-from fae.class_sampler import ClassSampler
+from cfol.class_sampler import ClassSampler
 
 
 class SamplerResetScheduler(object):

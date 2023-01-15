@@ -186,7 +186,7 @@ else:
     prefix = ""
 
 cmd = [
-    f"{prefix}python fae/runner.py with",
+    f"{prefix}python cfol/runner.py with",
     f"h.exp_name={config_to_name(configs)}",
 ]
 cmd = cmd + [f"{k}={v}" for k,v in configs.items()]
