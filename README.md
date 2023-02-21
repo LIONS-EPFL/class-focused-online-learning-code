@@ -1,5 +1,7 @@
 # Class focused online learning (CFOL)
 
+Official code for [Revisiting adversarial training for the worst-performing class](https://openreview.net/pdf?id=wkecshlYxI) accepted at TMLR 2023.
+
 ## Setup
 
 For CPU:
@@ -93,6 +95,19 @@ python cmd_generator.py --method ERM --dataset cifar10 --optional "h.epochs=200"
 python cmd_generator.py --method FOL --dataset cifar10 --optional "h.epochs=200" "h.model_opt.scheduler_milestones='[0.5,0.75]'" "h.model=resnet18" "h.model_opt.lr=0.1" "h.focused_sampler_lr=0.0000005"
 python cmd_generator.py --method CVaR --dataset cifar10 --optional "h.epochs=200" "h.model_opt.scheduler_milestones='[0.5,0.75]'" "h.model=resnet18" "h.model_opt.lr=0.1" "h.cvar_alpha=0.5"
 python cmd_generator.py --method LCVaR --dataset cifar10 --optional "h.epochs=200" "h.model_opt.scheduler_milestones='[0.5,0.75]'" "h.model=resnet18" "h.model_opt.lr=0.1" "h.cvar_alpha=0.2"
+```
+
+## Citing
+
+If you use this code please cite the following work: 
+
+```bibtex
+@article{pethick2023revisiting,
+  title={Revisiting adversarial training for the worst-performing class},
+  author={Pethick, Thomas and Chrysos, Grigorios and Cevher, Volkan},
+  journal={Transactions on Machine Learning Research},
+  year={2023}
+}
 ```
 
 
